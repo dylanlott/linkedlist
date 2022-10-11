@@ -1,30 +1,28 @@
 use std::{cell::RefCell, rc::Rc};
 
-// pub struct Payload<T> {
-//     value: T
-// }
+#[derive(Default)]
 struct ListNode<T> {
-    // item: Payload<T>,
+    item: T,
     next: Link<T>,
     prev: Link<T>,
 }
 
 impl<T> ListNode<T> {
-    fn new(_: T) -> Self {
+    fn new(value: T) -> Self {
         Self{
-            // item: Payload{ value: item},
+            item: value,
             next: None,
             prev: None,
         }
     }
-    // fn get(self) -> Payload<T> {
-    //     return self.item
-    // }
+    fn get(self) -> T {
+        self.item
+    }
 }
 
 type Link<T> = Option<Rc<RefCell<ListNode<T>>>>;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct DoublyLinkedList<T> {
     head: Link<T>,
     tail: Link<T>,
@@ -105,6 +103,8 @@ fn main() {
 
     list.push_back(node);
     list.push_back(node2);
-
     assert_eq!(list.len(), 2);
+
+    list.push_front(ListNode::new(3));
+    assert_eq!(list.len(), 3);
 }
